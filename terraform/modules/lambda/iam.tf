@@ -34,36 +34,59 @@ data "aws_iam_policy_document" "allow_s3" {
       "s3:DeleteObject"
     ]
     resources = [
-      "arn:aws:s3:::*", # this should be more specific once it is created: /recipedata
+      "arn:aws:s3:::*",
     ]
   }
 }
 
-# Create an IAM Role for the Lambda. Its rules are defined in the Policy Document.
-resource "aws_iam_role" "lambda_iam_role" {
-  name               = "iam_for_lambda"
+data "aws_iam_policy_document" "allow_dynamodb" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "dynamodb:GetItem",
+      "dynamodb:BatchGetItem",
+      "dynamodb:Query",
+      "dynamodb:Scan",
+      "dynamodb:UpdateItem",
+      "dynamodb:BatchWriteItem"
+    ]
+    resources = [
+      "arn:aws:dynamodb:::*", 
+    ]
+  }
+}
+
+resource "aws_iam_role" "recipeplatform_iam_role" {
+  name               = "recipeplatform_for_lambda"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
 }
 
-# Create an IAM Policy for Logging & S3. Its rules are defined in the Policy Document.
-resource "aws_iam_policy" "lambda_logging" {
-  name   = "lambda-logging-cloudwatch"
+resource "aws_iam_policy" "recipeplatform_lambda_logging" {
+  name   = "recipeplatform-logging-cloudwatch"
   policy = data.aws_iam_policy_document.lambda_allow_logging.json
 }
 
-resource "aws_iam_policy" "lambda_s3" {
-  name   = "lambda-s3-policy"
+resource "aws_iam_policy" "recipeplatform_lambda_s3" {
+  name   = "recipeplatform-s3-policy"
   policy = data.aws_iam_policy_document.allow_s3.json
 }
 
-# Attach the policies to the IAM Role
+resource "aws_iam_policy" "recipeplatform_lambda_dynamodb" {
+  name   = "recipeplatform-dynamodb-policy"
+  policy = data.aws_iam_policy_document.allow_dynamodb.json
+}
 
 resource "aws_iam_role_policy_attachment" "lambda_logging_policy_attachment" {
-  role       = aws_iam_role.lambda_iam_role.id
-  policy_arn = aws_iam_policy.lambda_logging.arn
+  role       = aws_iam_role.recipeplatform_iam_role.id
+  policy_arn = aws_iam_policy.recipeplatform_lambda_logging.arn
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_s3_policy_attachment" {
-  role       = aws_iam_role.lambda_iam_role.id
-  policy_arn = aws_iam_policy.lambda_s3.arn
+  role       = aws_iam_role.recipeplatform_iam_role.id
+  policy_arn = aws_iam_policy.recipeplatform_lambda_s3.arn
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_dynamodb_policy_attachment" {
+  role       = aws_iam_role.recipeplatform_iam_role.id
+  policy_arn = aws_iam_policy.recipeplatform_lambda_dynamodb.arn
 }

@@ -1,10 +1,13 @@
-module 'data_manager_lambda' {
-  source           = "./modules/lambda"
-  lambda_name      = "RecipePlatform.DataManager"
-  runtime          = "dotnet8"
-  timeout          = 15
-  memory_size      = 512
-  project_path     = "../src/RecipePlatform.DataManager"
+module "data_manager_lambda" {
+  source         = "./modules/lambda"
+  lambda_name    = "recipeplatform-datamanager"
+  runtime        = "dotnet8"
+  lambda_handler = "RecipePlatform.DataManager"
+  timeout        = 15
+  memory_size    = 512
+  project_path   = "${path.root}/../src/RecipePlatform.DataManager"
+
+  build_trigger = null_resource.build_dotnet_lambda
 }
 
 output "data_manager_lambda_url" {

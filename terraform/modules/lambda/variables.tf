@@ -9,15 +9,25 @@ variable "runtime" {
 }
 
 variable "memory_size" {
-  type    = string
+  type    = number
   default = 512
 }
 
 variable "timeout" {
-  type    = string
+  type    = number
   default = 15
 }
 
 variable "project_path" {
   type = string
+  default = ""
+}
+
+variable "lambda_handler" {
+  type = string
+  default = ""
+}
+
+variable "build_trigger" {
+  type = any
 }
