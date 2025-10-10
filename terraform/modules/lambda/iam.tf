@@ -51,7 +51,8 @@ data "aws_iam_policy_document" "allow_dynamodb" {
       "dynamodb:BatchWriteItem"
     ]
     resources = [
-      "arn:aws:dynamodb:::*", 
+      "arn:aws:dynamodb:eu-west-2:339713095147:table/Recipes",
+      "arn:aws:dynamodb:eu-west-2:339713095147:table/Recipes/index/*"
     ]
   }
 }
@@ -71,8 +72,9 @@ resource "aws_iam_policy" "recipeplatform_lambda_s3" {
   policy = data.aws_iam_policy_document.allow_s3.json
 }
 
-resource "aws_iam_policy" "recipeplatform_lambda_dynamodb" {
+resource "aws_iam_role_policy" "recipeplatform_lambda_dynamodb" {
   name   = "recipeplatform-dynamodb-policy"
+  role   = aws_iam_role.recipeplatform_iam_role.id
   policy = data.aws_iam_policy_document.allow_dynamodb.json
 }
 
@@ -84,9 +86,4 @@ resource "aws_iam_role_policy_attachment" "lambda_logging_policy_attachment" {
 resource "aws_iam_role_policy_attachment" "lambda_s3_policy_attachment" {
   role       = aws_iam_role.recipeplatform_iam_role.id
   policy_arn = aws_iam_policy.recipeplatform_lambda_s3.arn
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_dynamodb_policy_attachment" {
-  role       = aws_iam_role.recipeplatform_iam_role.id
-  policy_arn = aws_iam_policy.recipeplatform_lambda_dynamodb.arn
 }
