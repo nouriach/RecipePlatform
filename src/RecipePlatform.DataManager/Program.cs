@@ -33,11 +33,17 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/hello", () => "hello");
+app.MapGet("/health", () => "healthy");
 
-app.MapGet("/random-recipes", async (IRecipesService recipesService) =>
+app.MapGet("recipes/random", async (IRecipesService recipesService) =>
 {
     var recipes = await recipesService.GetRandomRecipesAsync();
+    return recipes.Count > 0 ? Results.Ok(recipes) : Results.NotFound();
+});
+
+app.MapGet("recipes/latest", async (IRecipesService recipesService) =>
+{
+    var recipes = await recipesService.GetLatestRecipesAsync();
     return recipes.Count > 0 ? Results.Ok(recipes) : Results.NotFound();
 });
 

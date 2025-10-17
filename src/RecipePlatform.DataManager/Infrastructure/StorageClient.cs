@@ -51,6 +51,33 @@ public class StorageClient(IAmazonS3 s3Client) : IStorageClient
         }
     }
 
+    public async Task<List<RecipeDto>> GetLatestRecipesAsync()
+    {
+        try
+        {
+            var getRequest = new GetObjectRequest
+            {
+                BucketName = BucketName,
+                Key = KeyName
+            };
+            
+            using var response = await s3Client.GetObjectAsync(getRequest);
+
+            using var reader = new StreamReader(response.ResponseStream);
+            var json = await reader.ReadToEndAsync();
+            if (string.IsNullOrEmpty(json))
+                return new List<RecipeDto>();
+
+            var recipes = JsonSerializer.Deserialize<List<RecipeDto>>(json, _jsonSerializerOptions);
+            return recipes ?? new List<RecipeDto>();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            throw;
+        }
+    }
+
     private async Task DeleteBucketDataIfExistsAsync()
     {
         try

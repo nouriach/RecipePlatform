@@ -5,4 +5,5 @@ namespace RecipePlatform.DataManager.Application.Abstractions;
 public interface IRecipesService
 {
     Task<List<RecipeDto>> GetRandomRecipesAsync();
+    Task<List<RecipeDto>> GetLatestRecipesAsync();
 }

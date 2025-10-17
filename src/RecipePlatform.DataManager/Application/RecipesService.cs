@@ -15,4 +15,9 @@ public class RecipesService(IRecipesRepository recipesRepository, IStorageClient
 
         return recipesDto;
     }
+
+    public async Task<List<RecipeDto>> GetLatestRecipesAsync()
+    {
+        return await storageClient.GetLatestRecipesAsync();
+    }
 }
