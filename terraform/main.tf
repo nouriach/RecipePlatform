@@ -9,6 +9,10 @@ module "data_manager_lambda" {
 
   build_trigger = null_resource.build_dotnet_lambda
 }
+module "data_manager_s3" {
+  source      = "./modules/S3"
+  bucket_name = "weekly-recipe-recommendations"
+}
 
 output "data_manager_lambda_url" {
   value = module.data_manager_lambda.function_url

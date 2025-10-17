@@ -1,3 +1,6 @@
+data "aws_region" "current" {}
+data "aws_caller_identity" "current" {}
+
 data "aws_iam_policy_document" "lambda_assume_role_policy" {
   statement {
     effect = "Allow"
@@ -51,8 +54,8 @@ data "aws_iam_policy_document" "allow_dynamodb" {
       "dynamodb:BatchWriteItem"
     ]
     resources = [
-      "arn:aws:dynamodb:eu-west-2:339713095147:table/Recipes",
-      "arn:aws:dynamodb:eu-west-2:339713095147:table/Recipes/index/*"
+      "arn:aws:dynamodb:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:table/Recipes",
+      "arn:aws:dynamodb:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:table/Recipes/index/*"
     ]
   }
 }

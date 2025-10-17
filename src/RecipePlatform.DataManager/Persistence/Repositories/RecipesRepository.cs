@@ -43,7 +43,7 @@ public class RecipesRepository : IRecipesRepository
             Console.WriteLine("---> Items retrieved from DynamoDB");
 
             var returnedRecipes = recipes.Items;
-            
+
             var recipeDtos = returnedRecipes.Select(dto => new RecipeDto
             {
                 RecipeId = dto["recipeId"].S,
