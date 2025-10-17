@@ -13,7 +13,7 @@ public class RecipesRepository : IRecipesRepository
     {
         _dynamoDb = dynamoDb;
     }
-    public async Task<List<RecipeDto>> GetRandomRecipesByBook(int? count, string? book)
+    public async Task<List<RecipeDto>> GetRandomRecipesByBookAsync(int? count, string? book)
     {
         try
         {
@@ -64,7 +64,7 @@ public class RecipesRepository : IRecipesRepository
         }
     }
 
-    public Task UpdateRecipeLastRecommendationDate(List<string> ids)
+    public Task UpdateRecipeLastRecommendationDateAsync(List<string> ids)
     {
         throw new NotImplementedException();
     }
