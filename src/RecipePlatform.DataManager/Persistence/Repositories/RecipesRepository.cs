@@ -1,7 +1,12 @@
+using System.Text.Json;
 using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
+using Amazon.Runtime.Documents;
 using RecipePlatform.DataManager.Application.Abstractions;
 using RecipePlatform.DataManager.Persistence.DTOs;
+using Swashbuckle.AspNetCore.Swagger;
+using Document = Amazon.DynamoDBv2.DocumentModel.Document;
 
 namespace RecipePlatform.DataManager.Persistence.Repositories;
 
@@ -20,7 +25,7 @@ public class RecipesRepository : IRecipesRepository
             Console.WriteLine("---> About to call DynamoDB");
             var request = new QueryRequest
             {
-                TableName = "Recipes",
+                TableName = "RecipesV2",
                 IndexName = "Book-LastRecommendedAt-index",
                 KeyConditionExpression = "#partitionKey = :partitionKeyValue AND #sortKey < :sortKeyValue",
                 ExpressionAttributeNames = new Dictionary<string, string>
@@ -64,8 +69,76 @@ public class RecipesRepository : IRecipesRepository
         }
     }
 
-    public Task UpdateRecipeLastRecommendationDateAsync(List<string> ids)
+    public async Task<List<RecipeDto?>> ConfirmRecipesAsync(List<string> ids)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var updatedItems = new List<UpdateItemResponse>();
+
+            foreach (var id in ids)
+            {
+                var updateRequest = new UpdateItemRequest
+                {
+                    TableName = "RecipesV2",
+                    Key = new Dictionary<string, AttributeValue>
+                    {
+                        ["recipeId"] = new AttributeValue { S = id }
+                    },
+                    UpdateExpression = "SET LastRecommendedAt = :val",
+                    ExpressionAttributeValues = new Dictionary<string, AttributeValue>
+                    {
+                        [":val"] = new AttributeValue { S = DateTime.UtcNow.ToString("yyyy-MM-dd") }
+                    },
+                    ReturnValues = "ALL_NEW"
+                };
+                    
+                var updateResponse = await _dynamoDb.UpdateItemAsync(updateRequest);
+
+                updatedItems.Add(updateResponse);
+            }
+
+            var recipeDtos = updatedItems.Select(x => TransformIntoDto(x));
+            return recipeDtos.ToList() ?? new List<RecipeDto>();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    public async Task MigrateData()
+    {
+        Console.WriteLine("---> In method: MigrateData");
+        var oldItems = await _dynamoDb.ScanAsync(new ScanRequest { TableName = "Recipes" });
+        Console.WriteLine($"Items retrieved from original table: {oldItems.Items.Count}");
+
+        try
+        {
+            foreach (var item in oldItems.Items)
+            {
+                item.Remove("RecommendationKey"); // drop the range key
+                await _dynamoDb.PutItemAsync(new PutItemRequest
+                {
+                    TableName = "RecipesV2",
+                    Item = item
+                });
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            throw;
+        }
+    }
+
+    private RecipeDto? TransformIntoDto(UpdateItemResponse response)
+    {
+        var doc = Document.FromAttributeMap(response.Attributes);
+        var recipeDto = JsonSerializer.Deserialize<RecipeDto>(
+            doc.ToJson(),
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true } 
+        );
+        return recipeDto;
     }
 }

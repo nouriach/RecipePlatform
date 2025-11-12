@@ -6,9 +6,7 @@ namespace RecipePlatform.DataManager.Persistence.DTOs;
 public class RecipeDto
 {
     [DynamoDBHashKey("recipeId")] // Primary key for the table
-    public string RecipeId { get; set; } = Guid.NewGuid().ToString();
-
-    [DynamoDBRangeKey] // Sort Key
+    public string RecipeId { get; set; }
     public string RecommendationKey { get; set; } = string.Empty;
 
     [DynamoDBProperty] // Regular attribute

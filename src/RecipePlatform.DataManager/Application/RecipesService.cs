@@ -20,4 +20,11 @@ public class RecipesService(IRecipesRepository recipesRepository, IStorageClient
     {
         return await storageClient.GetLatestRecipesAsync();
     }
+    
+    public async Task<bool> ConfirmRecipesAsync(List<string> recipeIds)
+    {
+        var confirmedRecipes = await recipesRepository.ConfirmRecipesAsync(recipeIds);
+        Console.WriteLine(confirmedRecipes);
+        return await storageClient.SaveRecipesAsync(confirmedRecipes);
+    }
 }

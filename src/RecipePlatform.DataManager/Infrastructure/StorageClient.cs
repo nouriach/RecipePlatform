@@ -22,7 +22,7 @@ public class StorageClient(IAmazonS3 s3Client) : IStorageClient
         try
         {
             var json = JsonSerializer.Serialize(recipes, _jsonSerializerOptions);
-
+            Console.WriteLine("---> Serializing JSON");
             Console.WriteLine($"---> JSON to upload: {json}");
 
             using var stream = new MemoryStream(Encoding.UTF8.GetBytes(json));

@@ -5,5 +5,6 @@ namespace RecipePlatform.DataManager.Application.Abstractions;
 public interface IRecipesRepository
 {
     Task<List<RecipeDto>> GetRandomRecipesByBookAsync(int? count = 8, string? book = "Green");
-    Task UpdateRecipeLastRecommendationDateAsync(List<string> ids);
+    Task<List<RecipeDto?>> ConfirmRecipesAsync(List<string> ids);
+    Task MigrateData();
 }
