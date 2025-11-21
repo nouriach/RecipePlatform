@@ -1,0 +1,3 @@
+- [ ] Retrieve recipes from S3
+- [ ] Send email with retrieved recipes, with link to SPA page
+- [ ] Send confirmation email
