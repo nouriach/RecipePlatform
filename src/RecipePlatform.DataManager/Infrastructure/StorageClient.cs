@@ -10,11 +10,11 @@ namespace RecipePlatform.DataManager.Infrastructure;
 
 public class StorageClient(IAmazonS3 s3Client) : IStorageClient
 {
+    // Eventually, store these in Parameter Store
     private const string BucketName = "weekly-recipe-recommendations";
     private const string KeyName = "recipe-data";
     
     private readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
-
 
     public async Task<bool> SaveRecipesAsync(List<RecipeDto> recipes)
     {
