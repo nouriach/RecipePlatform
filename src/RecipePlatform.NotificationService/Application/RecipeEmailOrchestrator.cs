@@ -11,6 +11,10 @@ public class RecipeEmailOrchestrator(INotificationClient notificationClient, ISt
         {
             await notificationClient.SendRecipeRecommendationAsync(recipes);
         }
+        else
+        {
+            throw new Exception("No recipes retrieved.");
+        }
     }
 
     public async Task SendRecipeConfirmationAsync()

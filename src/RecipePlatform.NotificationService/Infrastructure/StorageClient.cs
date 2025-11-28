@@ -37,7 +37,7 @@ public class StorageClient(IAmazonS3 s3Client) : IStorageClient
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            throw;
+            throw new Exception("Retrieving recipes from S3 failed.");
         }
     }
 }

@@ -86,12 +86,14 @@ data "aws_iam_policy_document" "allow_ses" {
     effect = "Allow"
 
     actions = [
-      "ses:SendEmail"
+      "ses:SendEmail",
+      "ses:SendTemplatedEmail"
     ]
 
     # Replace with the ARN(s) of your parameter(s)
     resources = [
       "arn:aws:ses:eu-west-2:339713095147:identity/*",
+      "arn:aws:ses:eu-west-2:339713095147:template/*"
     ]
   }
 }
