@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipePlatform.DataManager"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipePlatform.NotificationService", "src\RecipePlatform.NotificationService\RecipePlatform.NotificationService.csproj", "{8AA1A2A4-BE09-4EE4-B574-0400B083D516}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipePlatform.WebApp", "src\RecipePlatform.WebApp\RecipePlatform.WebApp.csproj", "{C85535BD-91FE-4ED6-98C7-516C24DDD2E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,10 +34,15 @@ Global
 		{8AA1A2A4-BE09-4EE4-B574-0400B083D516}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AA1A2A4-BE09-4EE4-B574-0400B083D516}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AA1A2A4-BE09-4EE4-B574-0400B083D516}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C85535BD-91FE-4ED6-98C7-516C24DDD2E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C85535BD-91FE-4ED6-98C7-516C24DDD2E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C85535BD-91FE-4ED6-98C7-516C24DDD2E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C85535BD-91FE-4ED6-98C7-516C24DDD2E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{02CDCF32-F1D9-4224-993B-77C2D4E39BE9} = {07A854AF-196C-4E3B-AB7C-7C34EF7667DD}
 		{E89FA5C5-8C7D-4850-BDEA-644BD2C0FF00} = {07A854AF-196C-4E3B-AB7C-7C34EF7667DD}
 		{8AA1A2A4-BE09-4EE4-B574-0400B083D516} = {07A854AF-196C-4E3B-AB7C-7C34EF7667DD}
+		{C85535BD-91FE-4ED6-98C7-516C24DDD2E7} = {07A854AF-196C-4E3B-AB7C-7C34EF7667DD}
 	EndGlobalSection
 EndGlobal
