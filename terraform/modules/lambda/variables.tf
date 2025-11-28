@@ -31,3 +31,27 @@ variable "lambda_handler" {
 variable "build_trigger" {
   type = any
 }
+
+variable "role_name" {
+  type = string
+}
+
+variable "cloudwatch_policy_name" {
+  type = string
+}
+
+variable "s3_policy_name" {
+  type = string
+}
+
+variable "dynamodb_policy_name" {
+  type = string
+}
+
+variable "ssm_policy_name" {
+  type = string
+}
+
+variable "ses_policy_name" {
+  type = string
+}

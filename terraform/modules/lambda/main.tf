@@ -7,7 +7,7 @@ resource "aws_lambda_function" "this" {
   handler       = var.lambda_handler
   filename         = data.archive_file.this.output_path
   source_code_hash = data.archive_file.this.output_base64sha256
-  
+
   publish = true
 
   depends_on = [
