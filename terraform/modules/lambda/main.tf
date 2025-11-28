@@ -29,4 +29,11 @@ data "archive_file" "this" {
 resource "aws_lambda_function_url" "this" {
   function_name = aws_lambda_function.this.function_name
   authorization_type = "NONE"
+
+  cors {
+    allow_origins  = ["http://localhost:5105"]  # this needs to become the Blazor WASM url, or any other function URL
+    allow_methods  = ["GET", "POST"] 
+    allow_headers  = ["*"]
+    allow_credentials = false  # or true if needed
+  }
 }

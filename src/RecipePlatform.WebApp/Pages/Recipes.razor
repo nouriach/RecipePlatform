@@ -1,0 +1,46 @@
+@page "/recipes"
+@inject HttpClient Http
+@using RecipePlatform.Core.Models
+@using System.Text.Json
+
+<PageTitle>Recipes</PageTitle>
+
+<section>
+    <h1>Recipes</h1>
+    @{
+        if (recipes is not null)
+        {
+            foreach (var recipe in recipes)
+            {
+                <p>@recipe.Title</p>
+            }
+        }
+        else
+        {
+            <p>Waiting for recipes..</p>
+        }
+    }
+</section>
+
+@code {
+    private List<Recipe> recipes;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        const string Url = "https://h466avb6nzs5ua73ptzc2pj5by0ktxnk.lambda-url.eu-west-2.on.aws/recipes/latest";
+        try
+        {
+            recipes = await Http.GetFromJsonAsync<List<Recipe>>(Url, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            Console.WriteLine(recipes);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+}
