@@ -12,7 +12,7 @@ module "data_manager_lambda" {
   dynamodb_policy_name = "datamanager-dynamodb"
   ssm_policy_name = "datamanager-ssm"
   ses_policy_name = "datamanager-ses"
-
+  allowed_origin = module.web_app_cdn.domain_name
   build_trigger = null_resource.build_datamanager_lambda
 }
 
@@ -30,7 +30,8 @@ module "notification_service_lambda" {
   dynamodb_policy_name = "notificationservice-dynamodb"
   ssm_policy_name = "notificationservice-ssm"
   ses_policy_name = "notificationservice-ses"
-
+  allowed_origin = module.web_app_cdn.domain_name
+  
   build_trigger = null_resource.build_notificationservice_lambda
 }
 

@@ -31,7 +31,7 @@ resource "aws_lambda_function_url" "this" {
   authorization_type = "NONE"
 
   cors {
-    allow_origins  = ["http://localhost:5105"]  # this needs to become the Blazor WASM url, or any other function URL
+    allow_origins = ["https://${var.allowed_origin}"] # this needs to become the Blazor WASM url, or any other function URL
     allow_methods  = ["GET", "POST"] 
     allow_headers  = ["*"]
     allow_credentials = false  # or true if needed

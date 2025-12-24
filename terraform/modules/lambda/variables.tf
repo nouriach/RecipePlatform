@@ -55,3 +55,8 @@ variable "ssm_policy_name" {
 variable "ses_policy_name" {
   type = string
 }
+
+variable "allowed_origin" {
+  type = string
+  default = ""
+}
